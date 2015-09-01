@@ -20,7 +20,6 @@
 
 		<!-- test libraries -->
 		<junit.version>4.12</junit.version>
-		<hci.api.version>1.25.0</hci.api.version>
 
 		<maven.war.plugin.version>2.5</maven.war.plugin.version>
 		<maven.compiler.source>1.7</maven.compiler.source>
