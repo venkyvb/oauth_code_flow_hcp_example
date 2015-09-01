@@ -11,7 +11,7 @@ The key software components involved would be:
 
 You can refer to the standard HCP documentation around this [here](https://goo.gl/IsiVvK).
 
-Note that in order to register a client, you would have to have a Redirect URI in your web-app that can accept the authorization code send by the Authorization server. In the current app this is the (DefaultCallbackResource)[https://github.com/venkyvb/oauth_code_flow_hcp_example/blob/master/testservice/src/main/java/com/sap/c4c/DefaultCallbackResource.java]. This accepts a query parameter called "code".
+Note that in order to register a client, you would have to have a Redirect URI in your web-app that can accept the authorization code send by the Authorization server. In the current app this is the [DefaultCallbackResource](https://github.com/venkyvb/oauth_code_flow_hcp_example/blob/master/testservice/src/main/java/com/sap/c4c/DefaultCallbackResource.java). This accepts a query parameter called "code".
 
 #### Create an OAuth scope
 
