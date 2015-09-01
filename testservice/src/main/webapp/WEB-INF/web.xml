@@ -1,0 +1,113 @@
+<web-app xmlns="http://java.sun.com/xml/ns/javaee" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xsi:schemaLocation="http://java.sun.com/xml/ns/javaee
+                      http://java.sun.com/xml/ns/javaee/web-app_3_0.xsd"
+	version="3.0" metadata-complete="true">
+
+	<display-name>testservice</display-name>
+	<description>testservice</description>
+
+	<!-- To enable CORS support in your application -->
+	<filter>
+		<filter-name>CORS</filter-name>
+		<filter-class>com.thetransactioncompany.cors.CORSFilter</filter-class>
+		<async-supported>true</async-supported> <!-- filter supports asynchronous processing -->
+
+		<!-- Enable CORS for REST HTTP methods -->
+		<init-param>
+			<param-name>cors.supportedMethods</param-name>
+			<param-value>GET,PUT,POST,DELETE,HEAD,OPTIONS</param-value>
+		</init-param>
+		<init-param>
+			<param-name>cors.supportedHeaders</param-name>
+			<param-value>*</param-value>
+		</init-param>
+		<init-param>
+			<param-name>cors.exposedHeaders</param-name>
+			<param-value>X-CSRF-Token, token</param-value>
+		</init-param>
+	</filter>
+
+	<filter-mapping>
+		<filter-name>CORS</filter-name>
+		<url-pattern>/*</url-pattern>
+	</filter-mapping>
+
+	<resource-ref>
+		<res-ref-name>EcmService</res-ref-name>
+		<res-type>com.sap.ecm.api.EcmService</res-type>
+	</resource-ref>
+
+	<resource-ref>
+		<res-ref-name>user/Provider</res-ref-name>
+		<res-type>com.sap.security.um.user.UserProvider</res-type>
+	</resource-ref>
+
+	<session-config>
+		<session-timeout>120</session-timeout>
+	</session-config>
+
+	<servlet>
+		<servlet-name>jerseyServlet</servlet-name>
+		<servlet-class>org.glassfish.jersey.servlet.ServletContainer</servlet-class>
+		<init-param>
+			<param-name>javax.ws.rs.Application</param-name>
+			<param-value>com.sap.c4c.JerseyApplication</param-value>
+		</init-param>
+		<load-on-startup>1</load-on-startup>
+		<async-supported>true</async-supported> <!-- servlet supports asynchronous processing -->
+		<multipart-config>
+			<location>/tmp</location>
+			<max-file-size>35000000</max-file-size>
+			<max-request-size>218018841</max-request-size>
+			<file-size-threshold>0</file-size-threshold>
+		</multipart-config>
+	</servlet>
+	<servlet-mapping>
+		<servlet-name>jerseyServlet</servlet-name>
+		<url-pattern>/*</url-pattern>
+	</servlet-mapping>
+
+	<filter>
+	    <display-name>OAuth scope filter</display-name>
+	    <filter-name>OAuthScopeFilter</filter-name>
+	    <filter-class>
+	      com.sap.cloud.security.oauth2.OAuthAuthorizationFilter
+	    </filter-class>
+	  <init-param>
+	    <param-name>scope</param-name>
+	    <param-value>full_access</param-value>
+	  </init-param>
+	   <init-param>
+	    <param-name>no-session</param-name>
+	    <param-value>true</param-value>
+	  </init-param>
+	   <init-param>
+	    <param-name>user-principal</param-name>
+	    <param-value>yes</param-value>
+	  </init-param>	  
+	</filter>
+
+    <filter-mapping>
+	  <filter-name>OAuthScopeFilter</filter-name>
+	  <url-pattern>/helloworld</url-pattern>
+	</filter-mapping>
+	
+
+	<login-config>
+		<auth-method>OAUTH</auth-method>
+	</login-config>
+	<security-constraint>
+		<web-resource-collection>
+			<web-resource-name>Protected Area</web-resource-name>
+			<url-pattern>/helloworld</url-pattern>
+		</web-resource-collection>
+		<auth-constraint>
+			<!-- Role Everyone will not be assignable -->
+			<role-name>Everyone</role-name>
+		</auth-constraint>
+	</security-constraint>
+	<security-role>
+		<description>All users</description>
+		<role-name>Everyone</role-name>
+	</security-role>
+</web-app>
